@@ -1,0 +1,29 @@
+﻿@model Catalogo.Models.Item
+
+<h1>@Model.Nombre</h1>
+
+<p>
+    <strong>Género:</strong>
+    @Model.Genero
+</p>
+
+<p>
+    <strong>Consola:</strong>
+    @Model.Origen
+</p>
+
+<p>
+    <strong>Año:</strong>
+    @Model.Rol
+</p>
+
+<p>
+    <strong>Descripción:</strong>
+    @Model.Descripcion
+</p>
+
+<hr />
+
+<a asp-action="Index">
+    &larr; Volver al Catálogo
+</a>

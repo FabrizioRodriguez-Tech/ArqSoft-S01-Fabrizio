@@ -1,0 +1,38 @@
+﻿@model Catalogo.Models.Item
+
+<h1>Agregar Agente</h1>
+
+<form asp-action="Agregar" method="post">
+    <div>
+        <label>Título</label>
+        <input asp-for="Nombre" />
+    </div>
+
+    <div>
+        <label>Género</label>
+        <input asp-for="Genero" />
+    </div>
+
+    <div>
+        <label>Consola</label>
+        <input asp-for="Origen" />
+    </div>
+
+    <div>
+        <label>Año</label>
+        <input asp-for="Rol" type="number" />
+    </div>
+
+    <div>
+        <label>Descripción</label>
+        <textarea asp-for="Descripcion"></textarea>
+    </div>
+
+    <button type="submit">Guardar</button>
+</form>
+
+<hr />
+
+<a asp-action="Index">
+    &larr; Cancelar
+</a>

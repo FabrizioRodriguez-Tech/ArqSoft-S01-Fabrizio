@@ -1,0 +1,76 @@
+﻿@model List<Catalogo.Models.Item>
+
+<div class="container mt-4">
+    <!-- Título con estilo Valorant -->
+    <h1 class="val-heading mb-4">Mi Catálogo</h1>
+
+    <!-- Filtro por género (Estilo Navbar/Tabs) -->
+    <div class="mb-4">
+        <nav class="nav nav-tabs border-bottom-0">
+            <a class="nav-link @(Context.Request.Query["genero"].ToString() == "" ? "active" : "")"
+               asp-action="Index">Todos</a>
+
+            @if (ViewBag.Generos != null)
+            {
+                foreach (var gen in ViewBag.Generos as List<string>)
+                {
+                    <a class="nav-link @(Context.Request.Query["genero"] == gen ? "active" : "")"
+                           asp-action="Index" asp-route-genero="@gen">
+                        @gen
+                    </a>
+                }
+            }
+        </nav>
+    </div>
+
+    <!-- Lista de agentes (Estilo Cards Tácticas) -->
+    <div class="row g-3">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        
+                        <!-- 1. 👤 Avatar del Agente (Izquierda) -->
+                        <div class="agent-avatar-container">
+                            <img src="@item.ImagenUrl"
+                                 alt="@item.Nombre"
+                                 class="agent-avatar"
+                                 onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png';" />
+                        </div>
+
+                        <!-- 2. Info del Agente (Derecha) -->
+                        <div class="flex-grow-1">
+                            <h3 class="h5 mb-1">
+                                <a asp-action="Detalle" asp-route-id="@item.Id" class="text-decoration-none text-white">
+                                    @item.Nombre
+                                </a>
+                            </h3>
+
+                            <div class="d-flex flex-column gap-1">
+                                <!-- Badge de Género -->
+                                <span class="badge bg-secondary w-fit-content" style="font-size: 0.7rem; width: max-content;">
+                                    @item.Genero
+                                </span>
+                                <!-- Origen con color Teal -->
+                                <small class="text-uppercase" style="letter-spacing: 1px; color: var(--val-teal); font-size: 0.75rem;">
+                                    @item.Origen
+                                </small>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <hr class="val-divider" />
+
+    <!-- Botón Agregar Agente -->
+    <div class="mt-4">
+        <a asp-action="Agregar" class="btn btn-primary">
+            + Agregar Agente
+        </a>
+    </div>
+</div>

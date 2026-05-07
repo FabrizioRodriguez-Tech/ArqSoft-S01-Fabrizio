@@ -1,21 +1,22 @@
 ﻿@model List<Catalogo.Models.Item>
+@{
+    ViewData["Title"] = "Agentes";
+}
 
-<div class="video-background">
-    <video autoplay muted loop playsinline id="bgVideo">
-        <source src="~/video/background.mp4" type="video/mp4">
-    </video>
-    <div class="video-overlay"></div>
-</div>
+@* Capas de fondo animadas *@
+<div class="radianite-mesh"></div>
+<div class="radianite-overlay"></div>
 
 <div class="content-wrapper">
     <div class="container mt-4">
         <div class="mb-5">
-            <span class="text-white-50 d-block mb-1" style="letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase;">Sistema de Gestión</span>
-            <h1 class="val-heading">Protocolo Valorant</h1>
+            <span class="text-white-50 d-block mb-1" style="letter-spacing: 2px; font-size: 0.8rem;">// BASE_DE_DATOS_ACTUAL</span>
+            <h1 class="val-heading">AGENTES</h1>
         </div>
 
+        @* Filtros *@
         <div class="mb-5 d-flex align-items-center gap-4 flex-wrap">
-            <a class="nav-filter @(Context.Request.Query["genero"] == "" ? "active" : "")" asp-action="Index">
+            <a class="nav-filter @(string.IsNullOrEmpty(Context.Request.Query["genero"]) ? "active" : "")" asp-action="Index">
                 <span class="filter-box"></span>
                 <span class="filter-text">TODOS</span>
             </a>
@@ -31,6 +32,7 @@
             }
         </div>
 
+        @* Lista *@
         <div class="row g-3">
             @foreach (var item in Model)
             {
@@ -38,13 +40,13 @@
                     <div class="card h-100 val-card border-0">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="agent-avatar-container">
-                                <img src="@item.ImagenUrl" class="agent-avatar" onerror="this.src='https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png';" />
+                                <img src="@item.ImagenUrl" class="agent-avatar" onerror="this.src='/images/v-logo.png';" />
                             </div>
                             <div class="flex-grow-1">
-                                <h3 class="h5 mb-1" style="font-family: 'Valorant', sans-serif;">
+                                <h4 class="h5 mb-1">
                                     <a asp-action="Detalle" asp-route-id="@item.Id" class="text-decoration-none text-white stretched-link">@item.Nombre</a>
-                                </h3>
-                                <span class="badge bg-danger" style="border-radius: 0; font-size: 0.65rem;">@item.Rol</span>
+                                </h4>
+                                <span class="badge bg-danger" style="border-radius: 0; font-size: 0.6rem; letter-spacing: 1px;">@item.Rol.ToUpper()</span>
                             </div>
                         </div>
                     </div>
@@ -52,8 +54,8 @@
             }
         </div>
 
-        <div class="mt-5 mb-5">
-            <a asp-action="Agregar" class="btn-val-primary">+ RECLUTAR AGENTE</a>
+        <div class="mt-5 mb-5 pb-5 text-center">
+            <a asp-action="Agregar" class="btn-val-primary">+ RECLUTAR NUEVO AGENTE</a>
         </div>
     </div>
 </div>

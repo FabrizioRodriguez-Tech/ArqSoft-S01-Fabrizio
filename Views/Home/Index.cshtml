@@ -1,8 +1,53 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<Catalogo.Models.Item>
+@{
+    ViewData["Title"] = "Inicio";
+    ViewData["HideNav"] = true; // Esto oculta la Navbar en esta página según tu Layout
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@* 1. FONDO DE VIDEO FIJO: No ocupa espacio en el flujo del documento *@
+<div class="video-background">
+    <video autoplay muted loop playsinline id="bgVideo">
+        @* Asegúrate de que el archivo esté en wwwroot/videos/background.mp4 *@
+        <source src="/videos/background.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+</div>
+
+@* 2. CONTENIDO PRINCIPAL: Flota sobre el video *@
+<div class="content-wrapper d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="text-center animate__animated animate__fadeIn">
+        
+        @* Subtítulo superior *@
+        <div class="mb-3">
+            <span class="text-danger" style="letter-spacing: 5px; font-family: 'Valorant', sans-serif; font-size: 0.7rem;">
+                ¿QUIEREN JUGAR? JUGUEMOS
+            </span>
+        </div>
+
+        @* Título Principal *@
+        <h1 class="val-heading border-0 p-0 mb-2" style="font-size: clamp(3rem, 12vw, 7rem); line-height: 1;">
+            VALORANT
+        </h1>
+        
+        @* Eslogan *@
+        <p class="text-white-50 mb-5" style="letter-spacing: 4px; font-size: 0.8rem; text-transform: uppercase;">
+            PROTOCOLO VALORANT
+        </p>
+
+        @* Botón de entrada *@
+        <div class="mt-5">
+            <a asp-controller="Catalogo" asp-action="Index" class="btn-val-primary" style="font-size: 1.2rem; padding: 15px 60px;">
+                AGENTES
+            </a>
+        </div>
+
+        @* Decoración táctica inferior *@
+        <div class="mt-5 pt-5">
+            <div class="d-flex justify-content-center gap-3 opacity-25">
+                <div style="width: 2px; height: 20px; background: white;"></div>
+                <div style="width: 2px; height: 20px; background: white;"></div>
+                <div style="width: 2px; height: 20px; background: white;"></div>
+            </div>
+        </div>
+    </div>
 </div>

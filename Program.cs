@@ -4,19 +4,24 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// 1. Configuración de la Base de Datos
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// 2. Configuración de Identity
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 3. Configuración del Pipeline de HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -24,15 +29,19 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
 
+// --- CLAVE PARA EL VIDEO ---
+// Esta línea permite que el navegador acceda a la carpeta wwwroot/video
+app.UseStaticFiles();
+
+app.UseRouting();
 app.UseAuthorization();
 
+// 4. Mapeo de Rutas y Activos Estáticos
 app.MapStaticAssets();
 
 app.MapControllerRoute(

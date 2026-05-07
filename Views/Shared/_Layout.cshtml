@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@{
+    // 1. Definimos la lógica de rutas al principio
+    var isHome = ViewContext.RouteData.Values["controller"]?.ToString() == "Home" &&
+                 ViewContext.RouteData.Values["action"]?.ToString() == "Index";
+
+    var isCatalogo = ViewContext.RouteData.Values["controller"]?.ToString() == "Catalogo" &&
+                     ViewContext.RouteData.Values["action"]?.ToString() == "Index";
+}
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -6,41 +15,65 @@
     <title>@ViewData["Title"] - Protocolo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
+    @if (isHome)
+    {
+        <style>
+                header, nav, footer {
+                    display: none !important;
+                }
+        </style>
+    }
 </head>
-<body class="val-body">
-    <header>
-        <nav class="navbar navbar-expand-sm val-navbar mb-3">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                        style="filter: invert(1); border-color: var(--val-red);">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">HOME</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Catalogo" asp-action="Index">CATALOGO</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+
+<body class="val-body @(isHome ? "is-home-page" : "")">
+
+    @* SOLO SE MUESTRA LA NAVBAR SI NO ES EL HOME *@
+    @if (!isHome)
+    {
+        <header>
+            <nav class="navbar navbar-expand-sm val-navbar mb-3">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                            style="filter: invert(1); border-color: var(--val-red);">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Index">HOME</a>
+                            </li>
+
+                            @* OCULTAMOS EL BOTÓN DE CATÁLOGO SI YA ESTAMOS EN ÉL *@
+                            @if (!isCatalogo)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Catalogo" asp-action="Index">CATALOGO</a>
+                                </li>
+                            }
+                        </ul>
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
+    }
 
     <main role="main">
         @RenderBody()
     </main>
 
-    <footer class="val-footer py-3">
-        <div class="container text-center">
-            <span class="text-white-50">&copy; 2026 - PROTOCOLO VALORANT</span>
-        </div>
-    </footer>
+    @if (!isHome)
+    {
+        <footer class="val-footer py-3">
+            <div class="container text-center">
+                <span class="text-white-50">&copy; 2026 - PROTOCOLO VALORANT</span>
+            </div>
+        </footer>
+    }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

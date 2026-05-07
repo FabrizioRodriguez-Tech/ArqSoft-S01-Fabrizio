@@ -1,76 +1,59 @@
 ﻿@model List<Catalogo.Models.Item>
 
-<div class="container mt-4">
-    <!-- Título con estilo Valorant -->
-    <h1 class="val-heading mb-4">Mi Catálogo</h1>
+<div class="video-background">
+    <video autoplay muted loop playsinline id="bgVideo">
+        <source src="~/video/background.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+</div>
 
-    <!-- Filtro por género (Estilo Navbar/Tabs) -->
-    <div class="mb-4">
-        <nav class="nav nav-tabs border-bottom-0">
-            <a class="nav-link @(Context.Request.Query["genero"].ToString() == "" ? "active" : "")"
-               asp-action="Index">Todos</a>
+<div class="content-wrapper">
+    <div class="container mt-4">
+        <div class="mb-5">
+            <span class="text-white-50 d-block mb-1" style="letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase;">Sistema de Gestión</span>
+            <h1 class="val-heading">Protocolo Valorant</h1>
+        </div>
 
+        <div class="mb-5 d-flex align-items-center gap-4 flex-wrap">
+            <a class="nav-filter @(Context.Request.Query["genero"] == "" ? "active" : "")" asp-action="Index">
+                <span class="filter-box"></span>
+                <span class="filter-text">TODOS</span>
+            </a>
             @if (ViewBag.Generos != null)
             {
                 foreach (var gen in ViewBag.Generos as List<string>)
                 {
-                    <a class="nav-link @(Context.Request.Query["genero"] == gen ? "active" : "")"
-                           asp-action="Index" asp-route-genero="@gen">
-                        @gen
+                    <a class="nav-filter @(Context.Request.Query["genero"] == gen ? "active" : "")" asp-action="Index" asp-route-genero="@gen">
+                        <span class="filter-box"></span>
+                        <span class="filter-text">@gen.ToUpper()</span>
                     </a>
                 }
             }
-        </nav>
-    </div>
+        </div>
 
-    <!-- Lista de agentes (Estilo Cards Tácticas) -->
-    <div class="row g-3">
-        @foreach (var item in Model)
-        {
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100">
-                    <div class="card-body d-flex align-items-center gap-3">
-                        
-                        <!-- 1. 👤 Avatar del Agente (Izquierda) -->
-                        <div class="agent-avatar-container">
-                            <img src="@item.ImagenUrl"
-                                 alt="@item.Nombre"
-                                 class="agent-avatar"
-                                 onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png';" />
-                        </div>
-
-                        <!-- 2. Info del Agente (Derecha) -->
-                        <div class="flex-grow-1">
-                            <h3 class="h5 mb-1">
-                                <a asp-action="Detalle" asp-route-id="@item.Id" class="text-decoration-none text-white">
-                                    @item.Nombre
-                                </a>
-                            </h3>
-
-                            <div class="d-flex flex-column gap-1">
-                                <!-- Badge de Género -->
-                                <span class="badge bg-secondary w-fit-content" style="font-size: 0.7rem; width: max-content;">
-                                    @item.Genero
-                                </span>
-                                <!-- Origen con color Teal -->
-                                <small class="text-uppercase" style="letter-spacing: 1px; color: var(--val-teal); font-size: 0.75rem;">
-                                    @item.Origen
-                                </small>
+        <div class="row g-3">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 val-card border-0">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="agent-avatar-container">
+                                <img src="@item.ImagenUrl" class="agent-avatar" onerror="this.src='https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png';" />
+                            </div>
+                            <div class="flex-grow-1">
+                                <h3 class="h5 mb-1" style="font-family: 'Valorant', sans-serif;">
+                                    <a asp-action="Detalle" asp-route-id="@item.Id" class="text-decoration-none text-white stretched-link">@item.Nombre</a>
+                                </h3>
+                                <span class="badge bg-danger" style="border-radius: 0; font-size: 0.65rem;">@item.Rol</span>
                             </div>
                         </div>
-
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
 
-    <hr class="val-divider" />
-
-    <!-- Botón Agregar Agente -->
-    <div class="mt-4">
-        <a asp-action="Agregar" class="btn btn-primary">
-            + Agregar Agente
-        </a>
+        <div class="mt-5 mb-5">
+            <a asp-action="Agregar" class="btn-val-primary">+ RECLUTAR AGENTE</a>
+        </div>
     </div>
 </div>

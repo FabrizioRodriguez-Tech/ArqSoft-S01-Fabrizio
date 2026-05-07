@@ -1,29 +1,77 @@
 ﻿@model Catalogo.Models.Item
 
-<h1>@Model.Nombre</h1>
+<div class="container mt-5">
+    <!-- Botón Volver siempre visible arriba -->
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm mb-4">
+        &larr; VOLVER AL EQUIPO
+    </a>
 
-<p>
-    <strong>Género:</strong>
-    @Model.Genero
-</p>
+    <div class="row p-4" style="background: rgba(15, 25, 35, 0.8); border: 1px solid rgba(255, 70, 85, 0.3); border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.5);">
+        
+        <!-- LADO IZQUIERDO: Imagen de cuerpo completo -->
+        <div class="col-md-6 text-center d-flex align-items-center justify-content-center">
+            <img src="@Model.ImagenFullUrl"
+                 alt="@Model.Nombre"
+                 class="img-fluid"
+                 style="max-height: 550px; filter: drop-shadow(0 0 20px rgba(255, 70, 85, 0.4));"
+                 onerror="this.src='@Model.ImagenUrl'" />
+        </div>
 
-<p>
-    <strong>Consola:</strong>
-    @Model.Origen
-</p>
+        <!-- LADO DERECHO: Info y Gráfico -->
+        <div class="col-md-6">
+            <h1 class="text-white text-uppercase fw-bold mb-0" style="font-size: 3.5rem; letter-spacing: -2px;">@Model.Nombre</h1>
+            <div class="mb-3">
+                <span class="badge bg-danger">@Model.Rol</span>
+                <span class="badge border border-secondary text-secondary">@Model.Genero</span>
+                <span class="text-white-50 ms-2 small">ORIGEN: @Model.Origen</span>
+            </div>
 
-<p>
-    <strong>Año:</strong>
-    @Model.Rol
-</p>
+            <p class="text-light lead mb-4" style="border-left: 3px solid #ff4655; padding-left: 15px;">
+                @Model.Descripcion
+            </p>
 
-<p>
-    <strong>Descripción:</strong>
-    @Model.Descripcion
-</p>
+            <div class="stats-box p-3" style="background: rgba(0,0,0,0.2); border-radius: 10px;">
+                <h5 class="text-center text-white-50 small mb-3" style="letter-spacing: 3px;">DATOS DE RENDIMIENTO</h5>
+                <div style="position: relative; height:300px;">
+                    <canvas id="pentagonStats"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<hr />
-
-<a asp-action="Index">
-    &larr; Volver al Catálogo
-</a>
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('pentagonStats');
+    new Chart(ctx, {
+    type: 'radar',
+    data: {
+    labels: ['DAÑO', 'UTILIDAD', 'MOVILIDAD', 'CONTROL', 'SUPERVIVENCIA'],
+    datasets: [{
+    data: [@Model.StatDano, @Model.StatUtilidad, @Model.StatMovilidad, @Model.StatControl, @Model.StatSupervivencia],
+    fill: true,
+    backgroundColor: 'rgba(255, 70, 85, 0.25)',
+    borderColor: '#ff4655',
+    borderWidth: 3,
+    pointBackgroundColor: '#fff',
+    pointRadius: 4
+    }]
+    },
+    options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+    r: {
+    angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+    pointLabels: { color: '#ece8e1', font: { size: 11, weight: 'bold' } },
+    ticks: { display: false },
+    suggestedMin: 0,
+    suggestedMax: 10
+    }
+    },
+    plugins: { legend: { display: false } }
+    }
+    });
+</script>

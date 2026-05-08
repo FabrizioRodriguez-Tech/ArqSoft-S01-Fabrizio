@@ -19,7 +19,6 @@ namespace Catalogo.Controllers
                 Descripcion = "Jett usa el viento para moverse rápidamente, evadir ataques y eliminar enemigos antes de que reaccionen.",
                 ImagenUrl = "/images/agents/jett.png",
                 ImagenFullUrl = "/images/agents/Jett-Full.png",
-                // Stats Canónicos: Alta movilidad, Daño explosivo
                 StatDano = 9,
                 StatUtilidad = 3,
                 StatMovilidad = 10,
@@ -36,7 +35,6 @@ namespace Catalogo.Controllers
                 Descripcion = "Chamber combina tecnología avanzada con armamento de alta precisión para eliminar enemigos desde la distancia y controlar el mapa.",
                 ImagenUrl = "/images/agents/Chamber.png",
                 ImagenFullUrl = "/images/agents/Chamber-full.png",
-                // Stats Canónicos: Precisión letal, baja utilidad de equipo
                 StatDano = 10,
                 StatUtilidad = 2,
                 StatMovilidad = 5,
@@ -53,7 +51,6 @@ namespace Catalogo.Controllers
                 Descripcion = "Neon canaliza energía eléctrica para moverse a gran velocidad y atacar antes de que el enemigo pueda reaccionar.",
                 ImagenUrl = "/images/agents/Neon_icon-2.png",
                 ImagenFullUrl = "/images/agents/Neon-full.png",
-                // Stats Canónicos: Velocidad máxima, daño moderado
                 StatDano = 7,
                 StatUtilidad = 5,
                 StatMovilidad = 10,
@@ -70,7 +67,6 @@ namespace Catalogo.Controllers
                 Descripcion = "Iso es un mercenario chino que entra en un estado de flujo para desmantelar a sus enemigos. Reconfigura la energía ambiental en un escudo a prueba de balas y avanza con determinación hacia su próximo duelo a muerte.",
                 ImagenUrl = "/images/agents/Iso.png",
                 ImagenFullUrl = "/images/agents/Iso_Full.png",
-                // Stats Personalizados: Alta utilidad y control de zona
                 StatDano = 8,
                 StatUtilidad = 4,
                 StatMovilidad = 5,
@@ -81,13 +77,12 @@ namespace Catalogo.Controllers
             {
                 Id = 5,
                 Nombre = "Clove",
-                Genero = "Femenino", // En el lore es No Binario, pero mantenemos tu filtro actual
+                Genero = "Femenino",
                 Origen = "Escocia",
                 Rol = "Controlador",
                 Descripcion = "Clove manipula el campo de batalla con humo y habilidades de apoyo, ayudando al equipo incluso después de morir.",
                 ImagenUrl = "/images/agents/Clove_icon-2.png",
                 ImagenFullUrl = "/images/agents/Clove_Full.png",
-                // Stats Canónicos: Alta supervivencia (incluso post-muerte)
                 StatDano = 6,
                 StatUtilidad = 8,
                 StatMovilidad = 5,
@@ -122,10 +117,29 @@ namespace Catalogo.Controllers
         [HttpPost]
         public IActionResult Agregar(Item item)
         {
-            item.Id = _items.Count + 1;
-            // Si el usuario no pone stats, les damos 5 por defecto para que el gráfico no rompa
+            // Asignación de ID basada en el máximo actual para evitar conflictos
+            item.Id = _items.Any() ? _items.Max(i => i.Id) + 1 : 1;
+
+            // ── LÓGICA DE IMAGEN DEFAULT (SILUETA) ──
+            if (string.IsNullOrWhiteSpace(item.ImagenUrl))
+            {
+                // Usamos el logo de Valorant como silueta de "Agente Desconocido"
+                item.ImagenUrl = "https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png";
+            }
+
+            // Aseguramos que ImagenFullUrl tenga contenido para que la vista de detalle no falle
+            if (string.IsNullOrWhiteSpace(item.ImagenFullUrl))
+            {
+                item.ImagenFullUrl = item.ImagenUrl;
+            }
+
+            // ── ASIGNACIÓN DE STATS POR DEFECTO ──
+            // Si los campos de stats llegan en 0, asignamos un valor medio (5) para el gráfico
             if (item.StatDano == 0) item.StatDano = 5;
-            // ... repetir lógica si es necesario ...
+            if (item.StatUtilidad == 0) item.StatUtilidad = 5;
+            if (item.StatMovilidad == 0) item.StatMovilidad = 5;
+            if (item.StatControl == 0) item.StatControl = 5;
+            if (item.StatSupervivencia == 0) item.StatSupervivencia = 5;
 
             _items.Add(item);
             return RedirectToAction("Index");

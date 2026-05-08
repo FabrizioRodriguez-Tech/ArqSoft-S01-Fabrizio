@@ -1,39 +1,90 @@
 ﻿@model Catalogo.Models.Item
+@{
+    ViewData["Title"] = "Reclutar Agente";
+}
 
-<h1>Agregar Agente</h1>
+<div class="radianite-mesh"></div>
+<div class="radianite-overlay"></div>
 
-<form asp-action="Agregar" method="post">
-    
-    <div>
-        <label asp-for="Nombre"></label>
-        <input asp-for="Nombre" />
+<div class="content-wrapper">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                
+                <div class="mb-4">
+                    <span class="text-white-50 d-block mb-1" style="letter-spacing: 3px; font-size: 0.7rem;">// INICIANDO_PROTOCOLO_DE_RECLUTAMIENTO</span>
+                    <h1 class="val-heading m-0">NUEVO RECLUTA</h1>
+                </div>
+
+                <div class="val-terminal-card">
+                    @* Previsualización de la imagen *@
+                    <div class="text-center mb-4">
+                        <div class="agent-preview-box" id="imgPreview"></div>
+                        <span class="text-danger small font-valorant" style="letter-spacing: 2px;">VISTA PREVIA DEL ARCHIVO</span>
+                    </div>
+
+                    <form asp-action="Agregar" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Nombre" class="val-label-tag">NOMBRE</label>
+                                <input asp-for="Nombre" class="form-control val-control" placeholder="NOMBRE..." required />
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Rol" class="val-label-tag">ROL</label>
+                                <input asp-for="Rol" class="form-control val-control" placeholder="DUELISTA, ETC..." />
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Genero" class="val-label-tag">GÉNERO</label>
+                                <input asp-for="Genero" class="form-control val-control" />
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Origen" class="val-label-tag">ORIGEN</label>
+                                <input asp-for="Origen" class="form-control val-control" />
+                            </div>
+
+                            <div class="col-12 mb-4">
+                                <label class="val-label-tag">FOTO DEL AGENTE</label>
+                                @* Le ponemos el id 'urlInput' para el script *@
+                                <input name="ImagenUrl" id="urlInput" class="form-control val-control" placeholder="https://..." />
+                            </div>
+
+                            <div class="col-12 mb-4">
+                                <label asp-for="Descripcion" class="val-label-tag">DESCRIPCIÓN</label>
+                                <textarea asp-for="Descripcion" class="form-control val-control" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-flex justify-content-between align-items-center">
+                            <a asp-action="Index" class="text-white-50 text-decoration-none" style="font-family: 'Valorant'; font-size: 0.7rem;">&larr; ABORTAR</a>
+                            <button type="submit" class="btn-val-primary">CONFIRMAR RECLUTA</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div>
-        <label asp-for="Genero"></label>
-        <input asp-for="Genero" />
-    </div>
+@section Scripts {
+    <script>
+        // Script para cambiar la silueta por la imagen real al pegar el link
+        const input = document.getElementById('urlInput');
+        const preview = document.getElementById('imgPreview');
+        const defaultImg = "https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png";
 
-    <div>
-        <label asp-for="Origen"></label>
-        <input asp-for="Origen" />
-    </div>
-
-    <div>
-        <label asp-for="Rol"></label>
-        <input asp-for="Rol"/>
-    </div>
-
-    <div>
-        <label asp-for="Descripcion"></label>
-        <textarea asp-for="Descripcion"></textarea>
-    </div>
-
-    <button type="submit">Guardar</button>
-</form>
-
-<hr />
-
-<a asp-action="Index">
-    &larr; Cancelar
-</a>
+        input.addEventListener('input', function() {
+            if (this.value.trim() !== "") {
+                preview.style.backgroundImage = `url('${this.value}')`;
+                preview.style.backgroundSize = "cover";
+                preview.style.opacity = "1";
+            } else {
+                preview.style.backgroundImage = `url('${defaultImg}')`;
+                preview.style.backgroundSize = "60%";
+                preview.style.opacity = "0.6";
+            }
+        });
+    </script>
+}

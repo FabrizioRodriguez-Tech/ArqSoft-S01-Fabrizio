@@ -1,5 +1,5 @@
 /* ============================================================
-   PROTOCOLO VALORANT — CÓDIGO FINAL DEFINITIVO
+   PROTOCOLO VALORANT — CÓDIGO FINAL DEFINITIVO (ACTUALIZADO)
    ============================================================ */
 
 /* ── 1. FUENTES Y VARIABLES ── */
@@ -27,7 +27,6 @@
     100% {
         background-position: 0 0, 0 1000px;
     }
-    /* Solo se mueve la línea de escaneo */
 }
 
 /* ── 3. BASE DEL SITIO ── */
@@ -41,7 +40,6 @@ body.val-body {
     min-height: 100vh;
 }
 
-/* Forzado de tipografía y color blanco */
 h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
     font-family: 'Valorant', sans-serif !important;
     color: var(--val-white) !important;
@@ -123,6 +121,7 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
     display: inline-block;
     text-decoration: none;
     transition: 0.2s;
+    font-family: 'Valorant', sans-serif;
 }
 
     .btn-val-primary:hover {
@@ -132,15 +131,13 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
     }
 
 /* ── 8. LÓGICA DE FONDOS (FIJOS) ── */
-
-/* HOME: Fondo de Video */
 .video-background {
-    position: fixed; /* Mantiene el video al fondo siempre */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -3; /* Detrás de todo */
+    z-index: -3;
     overflow: hidden;
 }
 
@@ -159,7 +156,6 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
     background: linear-gradient(rgba(15, 25, 35, 0.4), rgba(15, 25, 35, 0.8));
 }
 
-/* CATALOGO: Malla de Radianita con Escaneo */
 .radianite-mesh {
     position: fixed;
     top: 0;
@@ -187,11 +183,10 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
 /* ── 9. CONTROL DE VISIBILIDAD ── */
 .content-wrapper {
     position: relative;
-    z-index: 1; /* El contenido siempre flota sobre el fondo */
+    z-index: 1;
     width: 100%;
 }
 
-/* Estado HOME */
 body.is-home-page .video-background {
     display: block !important;
 }
@@ -204,11 +199,65 @@ body.is-home-page header, body.is-home-page footer {
     display: none !important;
 }
 
-/* Estado CATALOGO u otros */
 body:not(.is-home-page) .video-background {
     display: none !important;
 }
 
 body:not(.is-home-page) .radianite-mesh, body:not(.is-home-page) .radianite-overlay {
     display: block !important;
+}
+
+/* ── 10. NUEVA SECCIÓN: TERMINAL DE RECLUTAMIENTO (AGREGAR) ── */
+.val-terminal-card {
+    background: rgba(15, 25, 35, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-left: 4px solid var(--val-red) !important;
+    padding: 2.5rem;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+}
+
+.val-control {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--val-white) !important;
+    border-radius: 0 !important;
+    padding: 10px 15px !important;
+    transition: all 0.3s ease;
+}
+
+    .val-control:focus {
+        background: rgba(255, 70, 85, 0.05) !important;
+        border-color: var(--val-red) !important;
+        box-shadow: 0 0 15px var(--val-red-glow) !important;
+        outline: none;
+    }
+
+.val-label-tag {
+    font-family: 'Valorant', sans-serif;
+    font-size: 0.7rem;
+    color: var(--val-red);
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+textarea.val-control {
+    min-height: 100px;
+    resize: none;
+}
+
+/* Contenedor de previsualización para la silueta default */
+.agent-preview-box {
+    width: 120px;
+    height: 120px;
+    background-color: var(--val-dark-mid);
+    background-image: url('https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png');
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
+    margin: 0 auto 20px auto;
+    opacity: 0.6;
 }

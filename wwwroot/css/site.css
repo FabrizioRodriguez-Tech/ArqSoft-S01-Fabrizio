@@ -1,5 +1,5 @@
 /* ============================================================
-   PROTOCOLO VALORANT — CÓDIGO FINAL DEFINITIVO (ACTUALIZADO)
+   PROTOCOLO VALORANT — CÓDIGO FINAL DEFINITIVO
    ============================================================ */
 
 /* ── 1. FUENTES Y VARIABLES ── */
@@ -18,7 +18,7 @@
     --val-dark-mid: #1a2634;
 }
 
-/* ── 2. ANIMACIÓN DE ESCANEO TÁCTICO ── */
+/* ── 2. ANIMACIONES ── */
 @keyframes tacticalScan {
     0% {
         background-position: 0 0, 0 0;
@@ -46,7 +46,7 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
     text-transform: uppercase;
 }
 
-/* ── 4. NAVBAR (Personalizada) ── */
+/* ── 4. NAVBAR ── */
 .val-navbar {
     background-color: rgba(15, 25, 35, 0.95) !important;
     backdrop-filter: blur(10px);
@@ -59,7 +59,7 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
         text-shadow: 0 0 10px var(--val-red-glow);
     }
 
-/* ── 5. FILTROS REPARADOS ── */
+/* ── 5. FILTROS ── */
 .nav-filter {
     display: inline-flex !important;
     align-items: center !important;
@@ -96,22 +96,25 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
     }
 
 .agent-avatar-container {
-    width: 64px;
-    height: 64px;
-    background-color: var(--val-dark-mid);
+    width: 64px !important;
+    height: 64px !important;
+    background-color: #1a2634 !important; /* Fondo oscuro constante */
     clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
-    overflow: hidden;
-    flex-shrink: 0;
-    display: block !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Evita que se deforme si el texto de al lado es largo */
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .agent-avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
 
-/* ── 7. BOTÓN PRIMARIO ── */
+/* ── 7. BOTONES ── */
 .btn-val-primary {
     background-color: var(--val-red);
     color: white !important;
@@ -130,7 +133,7 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
         transform: scale(1.05);
     }
 
-/* ── 8. LÓGICA DE FONDOS (FIJOS) ── */
+/* ── 8. FONDOS Y MALLA DE RADIANITA ── */
 .video-background {
     position: fixed;
     top: 0;
@@ -145,15 +148,6 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(rgba(15, 25, 35, 0.4), rgba(15, 25, 35, 0.8));
 }
 
 .radianite-mesh {
@@ -180,34 +174,7 @@ h1, h2, h3, h4, h5, .val-heading, .font-valorant, .nav-link, .filter-text {
     z-index: -1;
 }
 
-/* ── 9. CONTROL DE VISIBILIDAD ── */
-.content-wrapper {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-}
-
-body.is-home-page .video-background {
-    display: block !important;
-}
-
-body.is-home-page .radianite-mesh, body.is-home-page .radianite-overlay {
-    display: none !important;
-}
-
-body.is-home-page header, body.is-home-page footer {
-    display: none !important;
-}
-
-body:not(.is-home-page) .video-background {
-    display: none !important;
-}
-
-body:not(.is-home-page) .radianite-mesh, body:not(.is-home-page) .radianite-overlay {
-    display: block !important;
-}
-
-/* ── 10. NUEVA SECCIÓN: TERMINAL DE RECLUTAMIENTO (AGREGAR) ── */
+/* ── 9. TERMINAL DE RECLUTAMIENTO ── */
 .val-terminal-card {
     background: rgba(15, 25, 35, 0.85) !important;
     backdrop-filter: blur(10px);
@@ -222,42 +189,89 @@ body:not(.is-home-page) .radianite-mesh, body:not(.is-home-page) .radianite-over
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: var(--val-white) !important;
     border-radius: 0 !important;
-    padding: 10px 15px !important;
-    transition: all 0.3s ease;
 }
-
-    .val-control:focus {
-        background: rgba(255, 70, 85, 0.05) !important;
-        border-color: var(--val-red) !important;
-        box-shadow: 0 0 15px var(--val-red-glow) !important;
-        outline: none;
-    }
 
 .val-label-tag {
     font-family: 'Valorant', sans-serif;
     font-size: 0.7rem;
     color: var(--val-red);
     letter-spacing: 2px;
-    margin-bottom: 5px;
-    display: block;
 }
 
-textarea.val-control {
-    min-height: 100px;
-    resize: none;
-}
-
-/* Contenedor de previsualización para la silueta default */
 .agent-preview-box {
     width: 120px;
     height: 120px;
     background-color: var(--val-dark-mid);
-    background-image: url('https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png');
     background-size: 60%;
     background-position: center;
     background-repeat: no-repeat;
     border: 2px solid rgba(255, 255, 255, 0.1);
     clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
     margin: 0 auto 20px auto;
-    opacity: 0.6;
 }
+
+/* ── 10. EL MOTOR DE CINEMÁTICAS (ACTUALIZADO) ── */
+
+#cinematicContainer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000 !important; /* Fondo negro absoluto */
+    z-index: 999999 !important; /* Capa suprema sobre nav/footer/privacy */
+    overflow: hidden;
+}
+
+#cinematicVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.8s ease-out; /* Clave para el desvanecimiento suave */
+}
+
+.cinematic-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+    z-index: 1000001;
+}
+
+/* Clase para el fundido a negro del video */
+.fade-video {
+    opacity: 0 !important;
+}
+/*SKIP BOTÓN*/
+.btn-skip-cinematic {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    z-index: 1000002;
+    background: rgba(15, 25, 35, 0.8) !important;
+    backdrop-filter: blur(5px);
+    color: var(--val-white);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 25px;
+    font-family: 'Valorant', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    /* LA FORMA DE FLASH CARD: Corte en la esquina superior derecha e inferior izquierda */
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+}
+
+    .btn-skip-cinematic:hover {
+        background: var(--val-red) !important;
+        border-color: var(--val-red);
+        color: white;
+        transform: scale(1.05);
+        box-shadow: 0 0 20px var(--val-red-glow);
+    }

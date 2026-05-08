@@ -3,65 +3,78 @@
     ViewData["Title"] = "Reclutar Agente";
 }
 
-<div class="radianite-mesh"></div>
-<div class="radianite-overlay"></div>
+<div id="cinematicContainer">
+    <div class="cinematic-overlay"></div>
+    
+    <button id="skipBtn" class="btn-skip-cinematic">
+        SALTAR <span style="font-size: 0.7rem; margin-left: 5px;">>></span>
+    </button>
 
-<div class="content-wrapper">
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                
-                <div class="mb-4">
-                    <span class="text-white-50 d-block mb-1" style="letter-spacing: 3px; font-size: 0.7rem;">// INICIANDO_PROTOCOLO_DE_RECLUTAMIENTO</span>
-                    <h1 class="val-heading m-0">NUEVO RECLUTA</h1>
-                </div>
+    <video id="cinematicVideo">
+        <source src="/videos/despegue.mp4" type="video/mp4">
+        Tu navegador no soporta el protocolo de video.
+    </video>
+</div>
 
-                <div class="val-terminal-card">
-                    @* Previsualización de la imagen *@
-                    <div class="text-center mb-4">
-                        <div class="agent-preview-box" id="imgPreview"></div>
-                        <span class="text-danger small font-valorant" style="letter-spacing: 2px;">VISTA PREVIA DEL ARCHIVO</span>
+<div id="uiWrapper" style="@(TempData["AgenteReclutado"] != null ? "display:none;" : "")">
+    <div class="radianite-mesh"></div>
+    <div class="radianite-overlay"></div>
+    
+    <div class="content-wrapper">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    
+                    <div class="mb-4">
+                        <span class="text-white-50 d-block mb-1" style="letter-spacing: 3px; font-size: 0.7rem;">// INICIANDO_PROTOCOLO_DE_RECLUTAMIENTO</span>
+                        <h1 class="val-heading m-0">NUEVO RECLUTA</h1>
                     </div>
 
-                    <form asp-action="Agregar" method="post">
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label asp-for="Nombre" class="val-label-tag">NOMBRE</label>
-                                <input asp-for="Nombre" class="form-control val-control" placeholder="NOMBRE..." required />
-                            </div>
-
-                            <div class="col-md-6 mb-4">
-                                <label asp-for="Rol" class="val-label-tag">ROL</label>
-                                <input asp-for="Rol" class="form-control val-control" placeholder="DUELISTA, ETC..." />
-                            </div>
-
-                            <div class="col-md-6 mb-4">
-                                <label asp-for="Genero" class="val-label-tag">GÉNERO</label>
-                                <input asp-for="Genero" class="form-control val-control" />
-                            </div>
-
-                            <div class="col-md-6 mb-4">
-                                <label asp-for="Origen" class="val-label-tag">ORIGEN</label>
-                                <input asp-for="Origen" class="form-control val-control" />
-                            </div>
-
-                            <div class="col-12 mb-4">
-                                <label class="val-label-tag">FOTO DEL AGENTE</label>
-                                @* Le ponemos el id 'urlInput' para el script *@
-                                <input name="ImagenUrl" id="urlInput" class="form-control val-control" placeholder="https://..." />
-                            </div>
-
-                            <div class="col-12 mb-4">
-                                <label asp-for="Descripcion" class="val-label-tag">DESCRIPCIÓN</label>
-                                <textarea asp-for="Descripcion" class="form-control val-control" rows="3"></textarea>
-                            </div>
+                    <div class="val-terminal-card">
+                        <div class="text-center mb-4">
+                            <div class="agent-preview-box" id="imgPreview"></div>
+                            <span class="text-danger small font-valorant" style="letter-spacing: 2px;">VISTA PREVIA DEL ARCHIVO</span>
                         </div>
 
-                        <div class="mt-4 d-flex justify-content-between align-items-center">
-                            <a asp-action="Index" class="text-white-50 text-decoration-none" style="font-family: 'Valorant'; font-size: 0.7rem;">&larr; ABORTAR</a>
-                            <button type="submit" class="btn-val-primary">CONFIRMAR RECLUTA</button>
-                        </div>
-                    </form>
+                        <form asp-action="Agregar" method="post">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label asp-for="Nombre" class="val-label-tag">NOMBRE</label>
+                                    <input asp-for="Nombre" class="form-control val-control" placeholder="NOMBRE..." required />
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label asp-for="Rol" class="val-label-tag">ROL</label>
+                                    <input asp-for="Rol" class="form-control val-control" placeholder="DUELISTA, ETC..." />
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label asp-for="Genero" class="val-label-tag">GÉNERO</label>
+                                    <input asp-for="Genero" class="form-control val-control" />
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label asp-for="Origen" class="val-label-tag">ORIGEN</label>
+                                    <input asp-for="Origen" class="form-control val-control" />
+                                </div>
+
+                                <div class="col-12 mb-4">
+                                    <label class="val-label-tag">FOTO DEL AGENTE</label>
+                                    <input name="ImagenUrl" id="urlInput" class="form-control val-control" placeholder="https://..." />
+                                </div>
+
+                                <div class="col-12 mb-4">
+                                    <label asp-for="Descripcion" class="val-label-tag">DESCRIPCIÓN</label>
+                                    <textarea asp-for="Descripcion" class="form-control val-control" rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 d-flex justify-content-between align-items-center">
+                                <a asp-action="Index" class="text-white-50 text-decoration-none" style="font-family: 'Valorant'; font-size: 0.7rem;">&larr; ABORTAR</a>
+                                <button type="submit" class="btn-val-primary">CONFIRMAR RECLUTA</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,7 +83,7 @@
 
 @section Scripts {
     <script>
-        // Script para cambiar la silueta por la imagen real al pegar el link
+        // --- PREVISUALIZACIÓN ---
         const input = document.getElementById('urlInput');
         const preview = document.getElementById('imgPreview');
         const defaultImg = "https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png";
@@ -84,6 +97,48 @@
                 preview.style.backgroundImage = `url('${defaultImg}')`;
                 preview.style.backgroundSize = "60%";
                 preview.style.opacity = "0.6";
+            }
+        });
+
+        // --- CINEMÁTICA Y SKIP ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const registroExitoso = '@(TempData["AgenteReclutado"] != null ? "true" : "false")';
+
+            if (registroExitoso === "true") {
+                const videoContainer = document.getElementById("cinematicContainer");
+                const videoElement = document.getElementById("cinematicVideo");
+                const uiWrapper = document.getElementById("uiWrapper");
+                const skipBtn = document.getElementById("skipBtn");
+
+                uiWrapper.style.display = "none";
+                videoContainer.style.display = "block";
+
+                videoElement.play().catch(error => {
+                    videoElement.muted = true;
+                    videoElement.play();
+                });
+
+                const finalizarYRedirigir = () => {
+                    videoElement.classList.add("fade-video");
+                    setTimeout(() => {
+                        window.location.href = '@Url.Action("Index", "Catalogo")';
+                    }, 500);
+                };
+
+                // Click en el botón Skip
+                if(skipBtn) {
+                    skipBtn.addEventListener("click", finalizarYRedirigir);
+                }
+
+                // Fin natural del video
+                videoElement.onended = finalizarYRedirigir;
+
+                // Fundido automático al final
+                videoElement.ontimeupdate = function() {
+                    if (videoElement.duration - videoElement.currentTime <= 0.8) {
+                        videoElement.classList.add("fade-video");
+                    }
+                };
             }
         });
     </script>

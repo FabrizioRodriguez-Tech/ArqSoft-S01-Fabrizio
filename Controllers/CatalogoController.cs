@@ -117,32 +117,36 @@ namespace Catalogo.Controllers
         [HttpPost]
         public IActionResult Agregar(Item item)
         {
-            // Asignación de ID basada en el máximo actual para evitar conflictos
+            // 1. Asignación de ID basada en el máximo actual
             item.Id = _items.Any() ? _items.Max(i => i.Id) + 1 : 1;
 
-            // ── LÓGICA DE IMAGEN DEFAULT (SILUETA) ──
+            // 2. Lógica de Imágenes (Mantenemos tu validación de URL vacía)
             if (string.IsNullOrWhiteSpace(item.ImagenUrl))
             {
-                // Usamos el logo de Valorant como silueta de "Agente Desconocido"
                 item.ImagenUrl = "https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png";
             }
-
-            // Aseguramos que ImagenFullUrl tenga contenido para que la vista de detalle no falle
             if (string.IsNullOrWhiteSpace(item.ImagenFullUrl))
             {
                 item.ImagenFullUrl = item.ImagenUrl;
             }
 
-            // ── ASIGNACIÓN DE STATS POR DEFECTO ──
-            // Si los campos de stats llegan en 0, asignamos un valor medio (5) para el gráfico
+            // 3. Stats por defecto (Para que el gráfico no rompa si vienen en 0)
             if (item.StatDano == 0) item.StatDano = 5;
             if (item.StatUtilidad == 0) item.StatUtilidad = 5;
             if (item.StatMovilidad == 0) item.StatMovilidad = 5;
             if (item.StatControl == 0) item.StatControl = 5;
             if (item.StatSupervivencia == 0) item.StatSupervivencia = 5;
 
+            // 4. Agregamos el agente a la lista maestra
             _items.Add(item);
-            return RedirectToAction("Index");
+
+            // 5. SEÑAL PARA EL VIDEO: 
+            // Esto le avisará a la vista Agregar.cshtml que debe ocultar el formulario 
+            // y disparar la cinemática de llegada.
+            TempData["AgenteReclutado"] = true;
+
+            // 6. Retornamos la vista (NO el Redirect) para que el JS pueda actuar
+            return View();
         }
     }
 }

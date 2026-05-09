@@ -3,7 +3,7 @@
     ViewData["Title"] = "Reclutar Agente";
 }
 
-<div id="cinematicContainer">
+<div id="cinematicContainer" style="display: none;">
     <div class="cinematic-overlay"></div>
     
     <button id="skipBtn" class="btn-skip-cinematic">
@@ -32,45 +32,53 @@
 
                     <div class="val-terminal-card">
                         <div class="text-center mb-4">
-                            <div class="agent-preview-box" id="imgPreview"></div>
-                            <span class="text-danger small font-valorant" style="letter-spacing: 2px;">VISTA PREVIA DEL ARCHIVO</span>
+                            <!-- Contenedor adaptado para usar el CSS de silueta táctica -->
+                            <div class="agent-avatar-container mx-auto" id="previewContainer" style="width: 120px; height: 120px; border-radius: 0;">
+                                <img id="imgPreview" src="" class="agent-avatar" style="opacity: 0;" />
+                            </div>
+                            <span class="text-danger small font-valorant d-block mt-2" style="letter-spacing: 2px;">VISTA PREVIA DEL ARCHIVO</span>
                         </div>
 
                         <form asp-action="Agregar" method="post">
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <label asp-for="Nombre" class="val-label-tag">NOMBRE</label>
-                                    <input asp-for="Nombre" class="form-control val-control" placeholder="NOMBRE..." required />
+                                    <input asp-for="Nombre" class="form-control val-control" placeholder="NOMBRE..." required maxlength="20" />
                                 </div>
 
                                 <div class="col-md-6 mb-4">
                                     <label asp-for="Rol" class="val-label-tag">ROL</label>
-                                    <input asp-for="Rol" class="form-control val-control" placeholder="DUELISTA, ETC..." />
+                                    <select asp-for="Rol" class="form-control val-control">
+                                        <option value="Duelista">DUELISTA</option>
+                                        <option value="Iniciador">INICIADOR</option>
+                                        <option value="Controlador">CONTROLADOR</option>
+                                        <option value="Centinela">CENTINELA</option>
+                                    </select>
                                 </div>
 
                                 <div class="col-md-6 mb-4">
                                     <label asp-for="Genero" class="val-label-tag">GÉNERO</label>
-                                    <input asp-for="Genero" class="form-control val-control" />
+                                    <input asp-for="Genero" class="form-control val-control" placeholder="MASCULINO / FEMENINO / NC" />
                                 </div>
 
                                 <div class="col-md-6 mb-4">
                                     <label asp-for="Origen" class="val-label-tag">ORIGEN</label>
-                                    <input asp-for="Origen" class="form-control val-control" />
+                                    <input asp-for="Origen" class="form-control val-control" placeholder="TIERRA-616, ETC..." />
                                 </div>
 
                                 <div class="col-12 mb-4">
-                                    <label class="val-label-tag">FOTO DEL AGENTE</label>
+                                    <label class="val-label-tag">URL DE IMAGEN (RECUADRO)</label>
                                     <input name="ImagenUrl" id="urlInput" class="form-control val-control" placeholder="https://..." />
                                 </div>
 
                                 <div class="col-12 mb-4">
-                                    <label asp-for="Descripcion" class="val-label-tag">DESCRIPCIÓN</label>
-                                    <textarea asp-for="Descripcion" class="form-control val-control" rows="3"></textarea>
+                                    <label asp-for="Descripcion" class="val-label-tag">DESCRIPCIÓN OPERATIVA</label>
+                                    <textarea asp-for="Descripcion" class="form-control val-control" rows="3" placeholder="RESUMEN DE CAPACIDADES..."></textarea>
                                 </div>
                             </div>
 
                             <div class="mt-4 d-flex justify-content-between align-items-center">
-                                <a asp-action="Index" class="text-white-50 text-decoration-none" style="font-family: 'Valorant'; font-size: 0.7rem;">&larr; ABORTAR</a>
+                                <a asp-action="Index" class="text-white-50 text-decoration-none" style="font-family: 'Valorant'; font-size: 0.7rem;">&larr; ABORTAR_MISIÓN</a>
                                 <button type="submit" class="btn-val-primary">CONFIRMAR RECLUTA</button>
                             </div>
                         </form>
@@ -83,24 +91,21 @@
 
 @section Scripts {
     <script>
-        // --- PREVISUALIZACIÓN ---
+        // --- PREVISUALIZACIÓN TÁCTICA ---
         const input = document.getElementById('urlInput');
-        const preview = document.getElementById('imgPreview');
-        const defaultImg = "https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png";
+        const imgPreview = document.getElementById('imgPreview');
 
         input.addEventListener('input', function() {
             if (this.value.trim() !== "") {
-                preview.style.backgroundImage = `url('${this.value}')`;
-                preview.style.backgroundSize = "cover";
-                preview.style.opacity = "1";
+                imgPreview.src = this.value;
+                imgPreview.style.opacity = "1";
             } else {
-                preview.style.backgroundImage = `url('${defaultImg}')`;
-                preview.style.backgroundSize = "60%";
-                preview.style.opacity = "0.6";
+                imgPreview.src = "";
+                imgPreview.style.opacity = "0";
             }
         });
 
-        // --- CINEMÁTICA Y SKIP ---
+        // --- MOTOR DE CINEMÁTICAS ---
         document.addEventListener("DOMContentLoaded", function() {
             const registroExitoso = '@(TempData["AgenteReclutado"] != null ? "true" : "false")';
 
@@ -113,30 +118,26 @@
                 uiWrapper.style.display = "none";
                 videoContainer.style.display = "block";
 
+                // Intento de reproducción con audio, fallback a mute si el navegador bloquea
                 videoElement.play().catch(error => {
                     videoElement.muted = true;
                     videoElement.play();
                 });
 
                 const finalizarYRedirigir = () => {
-                    videoElement.classList.add("fade-video");
+                    videoElement.style.opacity = "0";
                     setTimeout(() => {
                         window.location.href = '@Url.Action("Index", "Catalogo")';
-                    }, 500);
+                    }, 800);
                 };
 
-                // Click en el botón Skip
-                if(skipBtn) {
-                    skipBtn.addEventListener("click", finalizarYRedirigir);
-                }
-
-                // Fin natural del video
+                if(skipBtn) skipBtn.addEventListener("click", finalizarYRedirigir);
                 videoElement.onended = finalizarYRedirigir;
 
-                // Fundido automático al final
+                // Fundido automático antes de terminar
                 videoElement.ontimeupdate = function() {
                     if (videoElement.duration - videoElement.currentTime <= 0.8) {
-                        videoElement.classList.add("fade-video");
+                        videoElement.style.opacity = "0";
                     }
                 };
             }

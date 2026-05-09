@@ -1,37 +1,56 @@
 ﻿@model Catalogo.Models.Item
-
 <div class="container mt-5">
-    <!-- Botón Volver siempre visible arriba -->
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm mb-4">
-        &larr; VOLVER AL EQUIPO
-    </a>
+    <!-- Botón Volver con Esencia Hexagonal -->
+    <div class="mb-4">
+        <a asp-action="Index" class="btn-val-hex">
+            <span class="btn-inner">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2" style="transform: translateY(-1px);">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                VOLVER AL EQUIPO
+            </span>
+        </a>
+    </div>
 
-    <div class="row p-4" style="background: rgba(15, 25, 35, 0.8); border: 1px solid rgba(255, 70, 85, 0.3); border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.5);">
+    <div class="row p-4" style="background: rgba(15, 25, 35, 0.8); border: 1px solid rgba(255, 70, 85, 0.3); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%); box-shadow: 0 0 30px rgba(0,0,0,0.5);">
         
-        <!-- LADO IZQUIERDO: Imagen de cuerpo completo -->
+        <!-- LADO IZQUIERDO: Imagen de cuerpo completo o Silueta Táctica -->
         <div class="col-md-6 text-center d-flex align-items-center justify-content-center">
-            <img src="@Model.ImagenFullUrl"
-                 alt="@Model.Nombre"
-                 class="img-fluid"
-                 style="max-height: 550px; filter: drop-shadow(0 0 20px rgba(255, 70, 85, 0.4));"
-                 onerror="this.src='@Model.ImagenUrl'" />
+            @if (!string.IsNullOrWhiteSpace(Model.ImagenFullUrl))
+            {
+                <img src="@Model.ImagenFullUrl"
+                     alt="@Model.Nombre"
+                     class="img-fluid"
+                     style="max-height: 550px; filter: drop-shadow(0 0 20px rgba(255, 70, 85, 0.4));"
+                     onerror="this.src='@Model.ImagenUrl'" />
+            }
+            else
+            {
+                <!-- Este contenedor activa el CSS de silueta y láser que ya tienes -->
+                <div class="agent-avatar-container" style="width: 350px; height: 500px;">
+                    <img src="" class="agent-avatar" />
+                    <div style="position: absolute; bottom: 20px; width: 100%; font-family: 'Valorant'; color: var(--val-red); opacity: 0.5; z-index: 10;">
+                        IDENTIDAD NO CONFIRMADA
+                    </div>
+                </div>
+            }
         </div>
 
         <!-- LADO DERECHO: Info y Gráfico -->
         <div class="col-md-6">
-            <h1 class="text-white text-uppercase fw-bold mb-0" style="font-size: 3.5rem; letter-spacing: -2px;">@Model.Nombre</h1>
+            <h1 class="val-heading border-0 p-0 mb-0" style="font-size: 3.5rem; letter-spacing: -2px;">@Model.Nombre</h1>
             <div class="mb-3">
-                <span class="badge bg-danger">@Model.Rol</span>
-                <span class="badge border border-secondary text-secondary">@Model.Genero</span>
+                <span class="badge bg-danger" style="border-radius:0;">@Model.Rol</span>
+                <span class="badge border border-secondary text-secondary" style="border-radius:0;">@Model.Genero</span>
                 <span class="text-white-50 ms-2 small">ORIGEN: @Model.Origen</span>
             </div>
 
-            <p class="text-light lead mb-4" style="border-left: 3px solid #ff4655; padding-left: 15px;">
+            <p class="text-light lead mb-4" style="border-left: 3px solid #ff4655; padding-left: 15px; font-style: italic;">
                 @Model.Descripcion
             </p>
 
-            <div class="stats-box p-3" style="background: rgba(0,0,0,0.2); border-radius: 10px;">
-                <h5 class="text-center text-white-50 small mb-3" style="letter-spacing: 3px;">DATOS DE RENDIMIENTO</h5>
+            <div class="stats-box p-3" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);">
+                <h5 class="text-center text-white-50 small mb-3" style="letter-spacing: 3px; font-family: 'Valorant', sans-serif;">DATOS DE RENDIMIENTO</h5>
                 <div style="position: relative; height:300px;">
                     <canvas id="pentagonStats"></canvas>
                 </div>
@@ -40,7 +59,7 @@
     </div>
 </div>
 
-<!-- SCRIPTS -->
+<!-- SCRIPTS (Se mantienen igual) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('pentagonStats');

@@ -7,6 +7,7 @@ namespace Catalogo.Controllers
 {
     public class CatalogoController : Controller
     {
+        // Lista maestra de agentes (Base de datos temporal)
         private static List<Item> _items = new()
         {
             new Item
@@ -19,11 +20,7 @@ namespace Catalogo.Controllers
                 Descripcion = "Jett usa el viento para moverse rápidamente, evadir ataques y eliminar enemigos antes de que reaccionen.",
                 ImagenUrl = "/images/agents/jett.png",
                 ImagenFullUrl = "/images/agents/Jett-Full.png",
-                StatDano = 9,
-                StatUtilidad = 3,
-                StatMovilidad = 10,
-                StatControl = 4,
-                StatSupervivencia = 6
+                StatDano = 9, StatUtilidad = 3, StatMovilidad = 10, StatControl = 4, StatSupervivencia = 6
             },
             new Item
             {
@@ -35,11 +32,7 @@ namespace Catalogo.Controllers
                 Descripcion = "Chamber combina tecnología avanzada con armamento de alta precisión para eliminar enemigos desde la distancia y controlar el mapa.",
                 ImagenUrl = "/images/agents/Chamber.png",
                 ImagenFullUrl = "/images/agents/Chamber-full.png",
-                StatDano = 10,
-                StatUtilidad = 2,
-                StatMovilidad = 5,
-                StatControl = 7,
-                StatSupervivencia = 4
+                StatDano = 10, StatUtilidad = 2, StatMovilidad = 5, StatControl = 7, StatSupervivencia = 4
             },
             new Item
             {
@@ -51,11 +44,7 @@ namespace Catalogo.Controllers
                 Descripcion = "Neon canaliza energía eléctrica para moverse a gran velocidad y atacar antes de que el enemigo pueda reaccionar.",
                 ImagenUrl = "/images/agents/Neon_icon-2.png",
                 ImagenFullUrl = "/images/agents/Neon-full.png",
-                StatDano = 7,
-                StatUtilidad = 5,
-                StatMovilidad = 10,
-                StatControl = 6,
-                StatSupervivencia = 5
+                StatDano = 7, StatUtilidad = 5, StatMovilidad = 10, StatControl = 6, StatSupervivencia = 5
             },
             new Item
             {
@@ -64,14 +53,10 @@ namespace Catalogo.Controllers
                 Genero = "Masculino",
                 Origen = "China",
                 Rol = "Duelista",
-                Descripcion = "Iso es un mercenario chino que entra en un estado de flujo para desmantelar a sus enemigos. Reconfigura la energía ambiental en un escudo a prueba de balas y avanza con determinación hacia su próximo duelo a muerte.",
+                Descripcion = "Iso es un mercenario chino que entra en un estado de flujo para desmantelar a sus enemigos.",
                 ImagenUrl = "/images/agents/Iso.png",
                 ImagenFullUrl = "/images/agents/Iso_Full.png",
-                StatDano = 8,
-                StatUtilidad = 4,
-                StatMovilidad = 5,
-                StatControl = 6,
-                StatSupervivencia = 9
+                StatDano = 8, StatUtilidad = 4, StatMovilidad = 5, StatControl = 6, StatSupervivencia = 9
             },
             new Item
             {
@@ -80,17 +65,14 @@ namespace Catalogo.Controllers
                 Genero = "Femenino",
                 Origen = "Escocia",
                 Rol = "Controlador",
-                Descripcion = "Clove manipula el campo de batalla con humo y habilidades de apoyo, ayudando al equipo incluso después de morir.",
+                Descripcion = "Clove manipula el campo de batalla con humo y habilidades de apoyo.",
                 ImagenUrl = "/images/agents/Clove_icon-2.png",
                 ImagenFullUrl = "/images/agents/Clove_Full.png",
-                StatDano = 6,
-                StatUtilidad = 8,
-                StatMovilidad = 5,
-                StatControl = 7,
-                StatSupervivencia = 10
-            },
+                StatDano = 6, StatUtilidad = 8, StatMovilidad = 5, StatControl = 7, StatSupervivencia = 10
+            }
         };
 
+        // VISTA PRINCIPAL: Lista de agentes con filtros
         public IActionResult Index(string? genero)
         {
             var resultado = string.IsNullOrEmpty(genero)
@@ -103,49 +85,51 @@ namespace Catalogo.Controllers
             return View(resultado);
         }
 
+        // VISTA DE DETALLE: Expediente del agente
         public IActionResult Detalle(int id)
         {
             var item = _items.FirstOrDefault(i => i.Id == id);
             return item == null ? NotFound() : View(item);
         }
 
+        // VISTA AGREGAR: Formulario de reclutamiento
         public IActionResult Agregar()
         {
             return View();
         }
 
+        // PROCESO DE AGREGAR: Lógica de guardado y disparo de cinemática
         [HttpPost]
         public IActionResult Agregar(Item item)
         {
-            // 1. Asignación de ID basada en el máximo actual
+            // 1. Generar ID automático
             item.Id = _items.Any() ? _items.Max(i => i.Id) + 1 : 1;
 
-            // 2. Lógica de Imágenes (Mantenemos tu validación de URL vacía)
+            // 2. Lógica de "Imagen Desconocida" para activar el CSS
+            // Al dejarlo como string vacío, el CSS aplicará el efecto de silueta.
             if (string.IsNullOrWhiteSpace(item.ImagenUrl))
             {
-                item.ImagenUrl = "https://raw.githubusercontent.com/the-muda-organization/valorant-assets/main/agents/v-logo.png";
+                item.ImagenUrl = "";
             }
             if (string.IsNullOrWhiteSpace(item.ImagenFullUrl))
             {
-                item.ImagenFullUrl = item.ImagenUrl;
+                item.ImagenFullUrl = "";
             }
 
-            // 3. Stats por defecto (Para que el gráfico no rompa si vienen en 0)
+            // 3. Stats equilibrados por defecto si vienen en 0
             if (item.StatDano == 0) item.StatDano = 5;
             if (item.StatUtilidad == 0) item.StatUtilidad = 5;
             if (item.StatMovilidad == 0) item.StatMovilidad = 5;
             if (item.StatControl == 0) item.StatControl = 5;
             if (item.StatSupervivencia == 0) item.StatSupervivencia = 5;
 
-            // 4. Agregamos el agente a la lista maestra
+            // 4. Guardar en la lista
             _items.Add(item);
 
-            // 5. SEÑAL PARA EL VIDEO: 
-            // Esto le avisará a la vista Agregar.cshtml que debe ocultar el formulario 
-            // y disparar la cinemática de llegada.
+            // 5. Señal para el motor de cinemáticas en Agregar.cshtml
             TempData["AgenteReclutado"] = true;
 
-            // 6. Retornamos la vista (NO el Redirect) para que el JS pueda actuar
+            // Retornamos la vista para que el script de cinemática pueda ejecutarse
             return View();
         }
     }

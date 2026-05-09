@@ -17,7 +17,7 @@ namespace Catalogo.Controllers
                 Genero = "Femenino",
                 Origen = "Corea del Sur",
                 Rol = "Duelista",
-                Descripcion = "Jett usa el viento para moverse rápidamente, evadir ataques y eliminar enemigos antes de que reaccionen.",
+                Descripcion = "Jett es una agente originaria de Corea del Sur reconocida por su velocidad, agilidad y estilo de combate agresivo. Utiliza el poder del viento para desplazarse rápidamente por el mapa, alcanzar posiciones elevadas y escapar de situaciones peligrosas en cuestión de segundos. Gracias a su movilidad extrema y precisión letal, puede eliminar enemigos antes de que tengan tiempo de reaccionar. Su estilo de juego recompensa los reflejos rápidos, la puntería y la toma de decisiones instantánea, convirtiéndola en una de las duelistas más populares y peligrosas de Valorant.",
                 ImagenUrl = "/images/agents/jett.png",
                 ImagenFullUrl = "/images/agents/Jett-Full.png",
                 StatDano = 9, StatUtilidad = 3, StatMovilidad = 10, StatControl = 4, StatSupervivencia = 6
@@ -29,7 +29,7 @@ namespace Catalogo.Controllers
                 Genero = "Masculino",
                 Origen = "Francia",
                 Rol = "Centinela",
-                Descripcion = "Chamber combina tecnología avanzada con armamento de alta precisión para eliminar enemigos desde la distancia y controlar el mapa.",
+                Descripcion = "Chamber es un sofisticado agente francés especializado en precisión, estrategia y control del mapa. A diferencia de otros centinelas, combina habilidades defensivas con un estilo ofensivo basado en armas de alta tecnología y disparos letales a larga distancia. Su capacidad para colocar trampas y reposicionarse rápidamente le permite mantener el control de zonas importantes mientras elimina enemigos con gran eficacia. Elegante, frío y calculador, Chamber destaca por convertir cada enfrentamiento en una demostración de precisión y disciplina táctica.",
                 ImagenUrl = "/images/agents/Chamber.png",
                 ImagenFullUrl = "/images/agents/Chamber-full.png",
                 StatDano = 10, StatUtilidad = 2, StatMovilidad = 5, StatControl = 7, StatSupervivencia = 4
@@ -41,7 +41,7 @@ namespace Catalogo.Controllers
                 Genero = "Femenino",
                 Origen = "Filipinas",
                 Rol = "Duelista",
-                Descripcion = "Neon canaliza energía eléctrica para moverse a gran velocidad y atacar antes de que el enemigo pueda reaccionar.",
+                Descripcion = "Neon es una duelista filipina capaz de canalizar enormes cantidades de energía eléctrica para aumentar su velocidad y poder ofensivo. Su estilo de combate se basa en la rapidez, permitiéndole correr, deslizarse y entrar agresivamente en las zonas enemigas antes de que puedan reaccionar. Además de su movilidad extrema, puede crear barreras eléctricas y lanzar descargas que desorientan a sus rivales. Neon representa un estilo dinámico y explosivo, ideal para jugadores que disfrutan de la acción constante y ataques veloces.",
                 ImagenUrl = "/images/agents/Neon_icon-2.png",
                 ImagenFullUrl = "/images/agents/Neon-full.png",
                 StatDano = 7, StatUtilidad = 5, StatMovilidad = 10, StatControl = 6, StatSupervivencia = 5
@@ -53,7 +53,7 @@ namespace Catalogo.Controllers
                 Genero = "Masculino",
                 Origen = "China",
                 Rol = "Duelista",
-                Descripcion = "Iso es un mercenario chino que entra en un estado de flujo para desmantelar a sus enemigos.",
+                Descripcion = "Iso es un mercenario chino disciplinado y reservado que se especializa en dominar enfrentamientos individuales. Gracias a su concentración y control mental, puede entrar en un estado de flujo que le permite protegerse temporalmente del daño y aumentar sus posibilidades de supervivencia en combate. Su estilo de juego está diseñado para aislar enemigos y ganar duelos directos mediante precisión y sangre fría. Iso transmite una personalidad seria y calculadora, enfocada completamente en la eficiencia y la eliminación estratégica de objetivos.",
                 ImagenUrl = "/images/agents/Iso.png",
                 ImagenFullUrl = "/images/agents/Iso_Full.png",
                 StatDano = 8, StatUtilidad = 4, StatMovilidad = 5, StatControl = 6, StatSupervivencia = 9
@@ -65,7 +65,7 @@ namespace Catalogo.Controllers
                 Genero = "Femenino",
                 Origen = "Escocia",
                 Rol = "Controlador",
-                Descripcion = "Clove manipula el campo de batalla con humo y habilidades de apoyo.",
+                Descripcion = "Clove es una controladora escocesa con habilidades sobrenaturales que le permiten influir en la batalla incluso después de morir. Utiliza humo y energía mística para bloquear la visión enemiga, apoyar a su equipo y mantener presión constante sobre el mapa. A diferencia de otros agentes de control, Clove combina utilidad táctica con un estilo más agresivo y flexible, permitiendo participar activamente en los enfrentamientos. Su personalidad relajada y desafiante refleja perfectamente su forma impredecible de combatir.",
                 ImagenUrl = "/images/agents/Clove_icon-2.png",
                 ImagenFullUrl = "/images/agents/Clove_Full.png",
                 StatDano = 6, StatUtilidad = 8, StatMovilidad = 5, StatControl = 7, StatSupervivencia = 10

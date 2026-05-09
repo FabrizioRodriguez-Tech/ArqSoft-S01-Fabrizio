@@ -1,74 +1,185 @@
 ﻿@model Catalogo.Models.Item
+
 <div class="container mt-5">
+
     <!-- Botón Volver con Esencia Hexagonal -->
     <div class="mb-4">
         <a asp-action="Index" class="btn-val-hex">
             <span class="btn-inner">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2" style="transform: translateY(-1px);">
+                <svg width="18"
+                     height="18"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     class="me-2"
+                     style="transform: translateY(-1px);">
                     <path d="M19 12H5M12 19l-7-7 7-7" />
                 </svg>
+
                 VOLVER AL EQUIPO
             </span>
         </a>
     </div>
 
-    <div class="row p-4" style="background: rgba(15, 25, 35, 0.8); border: 1px solid rgba(255, 70, 85, 0.3); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%); box-shadow: 0 0 30px rgba(0,0,0,0.5);">
-        
-        <!-- LADO IZQUIERDO: Imagen de cuerpo completo o Silueta Táctica -->
+    <!-- PANEL PRINCIPAL -->
+    <div class="row p-4"
+         style="
+        background: rgba(15, 25, 35, 0.82);
+        border: 1px solid rgba(255, 70, 85, 0.3);
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        backdrop-filter: blur(10px);
+        ">
+
+        <!-- LADO IZQUIERDO -->
         <div class="col-md-6 text-center d-flex align-items-center justify-content-center">
+
             @if (!string.IsNullOrWhiteSpace(Model.ImagenFullUrl))
             {
                 <img src="@Model.ImagenFullUrl"
                      alt="@Model.Nombre"
                      class="img-fluid"
-                     style="max-height: 550px; filter: drop-shadow(0 0 20px rgba(255, 70, 85, 0.4));"
+                     style="
+                max-height: 550px;
+                filter: drop-shadow(0 0 20px rgba(255, 70, 85, 0.4));
+                transition: transform 0.3s ease;
+                "
+                     onmouseover="this.style.transform='scale(1.02)'"
+                     onmouseout="this.style.transform='scale(1)'"
                      onerror="this.src='@Model.ImagenUrl'" />
             }
             else
             {
-                <!-- Este contenedor activa el CSS de silueta y láser que ya tienes -->
-                <div class="agent-avatar-container" style="width: 350px; height: 500px;">
+                <!-- Silueta táctica -->
+                <div class="agent-avatar-container"
+                     style="width: 350px; height: 500px;">
+
                     <img src="" class="agent-avatar" />
-                    <div style="position: absolute; bottom: 20px; width: 100%; font-family: 'Valorant'; color: var(--val-red); opacity: 0.5; z-index: 10;">
+
+                    <div style="
+                        position: absolute;
+                        bottom: 20px;
+                        width: 100%;
+                        font-family: 'Valorant';
+                        color: var(--val-red);
+                        opacity: 0.5;
+                        z-index: 10;
+                        letter-spacing: 2px;
+                        ">
                         IDENTIDAD NO CONFIRMADA
                     </div>
                 </div>
             }
+
         </div>
 
-        <!-- LADO DERECHO: Info y Gráfico -->
+        <!-- LADO DERECHO -->
         <div class="col-md-6">
-            <h1 class="val-heading border-0 p-0 mb-0" style="font-size: 3.5rem; letter-spacing: -2px;">@Model.Nombre</h1>
-            <div class="mb-3">
-                <span class="badge bg-danger" style="border-radius:0;">@Model.Rol</span>
-                <span class="badge border border-secondary text-secondary" style="border-radius:0;">@Model.Genero</span>
-                <span class="text-white-50 ms-2 small">ORIGEN: @Model.Origen</span>
+
+            <!-- NOMBRE -->
+            <h1 class="val-heading border-0 p-0 mb-0"
+                style="
+                font-size: 3.5rem;
+                letter-spacing: -2px;
+                text-shadow: 0 0 15px rgba(255,70,85,0.25);
+                ">
+                @Model.Nombre
+            </h1>
+
+            <!-- TAGS -->
+            <div class="mb-4 mt-2">
+
+                <span class="badge bg-danger"
+                      style="
+                    border-radius:0;
+                    letter-spacing: 1px;
+                    padding: 8px 12px;
+                    ">
+                    @Model.Rol
+                </span>
+
+                <span class="badge border border-secondary text-secondary"
+                      style="
+                    border-radius:0;
+                    padding: 8px 12px;
+                    letter-spacing: 1px;
+                    ">
+                    @Model.Genero
+                </span>
+
+                <span class="text-white-50 ms-2 small"
+                      style="
+                    letter-spacing: 2px;
+                    font-family: 'Rajdhani', sans-serif;
+                    ">
+                    ORIGEN: @Model.Origen
+                </span>
+
             </div>
 
-            <p class="text-light lead mb-4" style="border-left: 3px solid #ff4655; padding-left: 15px; font-style: italic;">
-                @Model.Descripcion
-            </p>
+            <!-- DESCRIPCIÓN ACTUALIZADA -->
+            <div class="agent-info-panel mb-4">
 
-            <div class="stats-box p-3" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);">
-                <h5 class="text-center text-white-50 small mb-3" style="letter-spacing: 3px; font-family: 'Valorant', sans-serif;">DATOS DE RENDIMIENTO</h5>
+                <p class="agent-description mb-0">
+                    @Model.Descripcion
+                </p>
+
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-box p-3"
+                 style="
+                background: rgba(0,0,0,0.3);
+                border: 1px solid rgba(255,255,255,0.05);
+                backdrop-filter: blur(8px);
+                ">
+
+                <h5 class="text-center text-white-50 small mb-3"
+                    style="
+                    letter-spacing: 3px;
+                    font-family: 'Valorant', sans-serif;
+                    ">
+                    DATOS DE RENDIMIENTO
+                </h5>
+
                 <div style="position: relative; height:300px;">
                     <canvas id="pentagonStats"></canvas>
                 </div>
+
             </div>
+
         </div>
     </div>
 </div>
 
-<!-- SCRIPTS (Se mantienen igual) -->
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
     const ctx = document.getElementById('pentagonStats');
+
     new Chart(ctx, {
     type: 'radar',
+
     data: {
-    labels: ['DAÑO', 'UTILIDAD', 'MOVILIDAD', 'CONTROL', 'SUPERVIVENCIA'],
+    labels: [
+    'DAÑO',
+    'UTILIDAD',
+    'MOVILIDAD',
+    'CONTROL',
+    'SUPERVIVENCIA'
+    ],
+
     datasets: [{
-    data: [@Model.StatDano, @Model.StatUtilidad, @Model.StatMovilidad, @Model.StatControl, @Model.StatSupervivencia],
+    data: [
+    @Model.StatDano,
+    @Model.StatUtilidad,
+    @Model.StatMovilidad,
+    @Model.StatControl,
+    @Model.StatSupervivencia
+    ],
+
     fill: true,
     backgroundColor: 'rgba(255, 70, 85, 0.25)',
     borderColor: '#ff4655',
@@ -77,20 +188,43 @@
     pointRadius: 4
     }]
     },
+
     options: {
     responsive: true,
     maintainAspectRatio: false,
+
     scales: {
     r: {
-    angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-    grid: { color: 'rgba(255, 255, 255, 0.1)' },
-    pointLabels: { color: '#ece8e1', font: { size: 11, weight: 'bold' } },
-    ticks: { display: false },
+    angleLines: {
+    color: 'rgba(255, 255, 255, 0.1)'
+    },
+
+    grid: {
+    color: 'rgba(255, 255, 255, 0.1)'
+    },
+
+    pointLabels: {
+    color: '#ece8e1',
+    font: {
+    size: 11,
+    weight: 'bold'
+    }
+    },
+
+    ticks: {
+    display: false
+    },
+
     suggestedMin: 0,
     suggestedMax: 10
     }
     },
-    plugins: { legend: { display: false } }
+
+    plugins: {
+    legend: {
+    display: false
+    }
+    }
     }
     });
 </script>
